@@ -19,6 +19,64 @@ output:
 
 ## Results
 
+```{r setup}
+library(tidyverse)
+library(ggplot2)
+
+# loading the dataset
+
+euro <- read.csv("2022_jury_results.csv")
+
+# creating a new variable
+
+euro <- euro |>
+  mutate(
+    big_five = if_else(Contestant == "France" | 
+                         Contestant == "Germany" |
+                         Contestant == "Italy" | 
+                         Contestant == "Spain" |
+                         Contestant == "United Kingdom", 
+                       "Big Five", "Not Big Five")
+  )
+```
+
+```{r initial visualization}
+# creating a barplot visualization
+
+euro_bar <- euro |>
+  group_by(big_five) |>
+  summarize(
+    avg_score = mean(Total.score, na.rm = TRUE)
+  ) |>
+  ggplot(mapping = aes(x = big_five, y = avg_score, fill = big_five)) +
+  geom_col() +
+  labs(
+    title = "Average 2022 Eurovision Scores for Big Five and Non-Big Five Countries",
+    x = "Big Five Status",
+    y = "Average Total Score in 2022"
+  ) +
+  theme(legend.position = "none")
+
+euro_bar
+```
+
+```{r single linear regression}
+# creating a linear regression for the main variable
+
+fit1 <- lm(Total.score ~ big_five, data = euro)
+
+library(modelsummary)
+
+var_labels <- c(
+  "(Intercept)" = "Intercept",
+  "big_fiveNot Big Five" = "Not Big Five"
+)
+
+modelsummary(list(Regression = fit1),
+             fmt = fmt_decimal(digits = 2, pdigits = 3),
+             coef_map = var_labels,
+             gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
 
 
 ## Conclusion
