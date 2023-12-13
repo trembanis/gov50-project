@@ -8,7 +8,6 @@ output:
 ---
 
 
-
 ## Introduction
 
 The glitz, the glamor, the inexplicable banana-eating wolves - the Eurovision Song Contest is nothing if not a spectacle, and one I eagerly anticipate each year. The rules have always been, to say the least, a little fuzzy (who let Australia compete, anyway?), but one in particular strikes me as contrary to Eurovision's already debatable commitment to merit-based adjudication: France, Germany, Italy, Spain, and the United Kingdom - the so-called "Big Five" - automatically qualify for the finals, regardless of the quality of their performances. This guaranteed spot offers a leg up over other countries, which must survive earlier rounds of the competition to earn their place in the final, but a question remains: do the Big Five countries ultimately score better than their competitors?
