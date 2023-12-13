@@ -86,16 +86,43 @@ song <- read.csv("song_data.csv")
 
 song <- song |>
   filter(year == 2022, final_draw_position != "-") |>
-  rename(Contestant = country)
+  rename(Contestant = country) |>
+  mutate(
+    english = if_else(language == "English", "English", "Other"),
+    dancers = if_else(backing_dancers > 0, "Backing Dancers", "No Backing Dancers"),
+    singers = if_else(main_singers > 1, "Multiple Singers", "One Singer")
+  )
 
 # joining euro and song
 
 euro_song <- left_join(euro, song, by = 'Contestant') |>
   select(Contestant, Total.score, Jury.score, Televoting.score, big_five, 
-         final_draw_position, language, style, gender, main_singers, key, BPM,
-         energy, danceability, happiness, loudness, acousticness, 
-         instrumentalness, liveness, speechiness, backing_dancers, 
-         backing_singers, backing_instruments, instrument_10, race)
+         final_draw_position, language, style, gender, main_singers, key, 
+         BPM, energy, danceability, happiness, loudness, acousticness, 
+         instrumentalness, liveness, speechiness, dancers, english,
+         singers, backing_instruments, instrument_10, race)
+```
+
+```{r multiple regression}
+# creating a multiple regression
+
+fit2 <- lm(Total.score ~ big_five + gender + dancers + singers + english, data = euro_song)
+
+var_labels <- c(
+  "(Intercept)" = "Intercept",
+  "big_fiveNot Big Five" = "Not Big Five",
+  "genderMale" = "Male",
+  "genderMix" = "Mixed Gender",
+  "dancersNo Backing Dancers" = "No Backing Dancers",
+  "singersOne Singer" = "One Singer",
+  "englishOther" = "Non-English Lyrics"
+)
+
+modelsummary(list(Regression = fit2),
+             statistic = "p.value",
+             fmt = fmt_decimal(digits = 2, pdigits = 3),
+             coef_map = var_labels,
+             gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
 
