@@ -73,9 +73,29 @@ var_labels <- c(
 )
 
 modelsummary(list(Regression = fit1),
+             statistic = "p.value",
              fmt = fmt_decimal(digits = 2, pdigits = 3),
              coef_map = var_labels,
              gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+
+```{r joining a dataset}
+# loading a new dataset
+
+song <- read.csv("song_data.csv")
+
+song <- song |>
+  filter(year == 2022, final_draw_position != "-") |>
+  rename(Contestant = country)
+
+# joining euro and song
+
+euro_song <- left_join(euro, song, by = 'Contestant') |>
+  select(Contestant, Total.score, Jury.score, Televoting.score, big_five, 
+         final_draw_position, language, style, gender, main_singers, key, BPM,
+         energy, danceability, happiness, loudness, acousticness, 
+         instrumentalness, liveness, speechiness, backing_dancers, 
+         backing_singers, backing_instruments, instrument_10, race)
 ```
 
 
