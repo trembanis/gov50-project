@@ -1,6 +1,6 @@
 ---
 title: "Gov 50 Final Project"
-author: "Your Name Here"
+author: "Ella Trembanis"
 description: "My final project"
 output:
   distill::distill_article:
@@ -9,6 +9,16 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
-I am interested in exploring data related to...
+
+
+## Data
+
+
+
+## Results
+
+
+
+## Conclusion
