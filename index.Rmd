@@ -1,7 +1,7 @@
 ---
-title: "Gov 50 Final Project"
+title: "The Big Five Advantage"
 author: "Ella Trembanis"
-description: "My final project"
+description: "An analysis of score outcomes in the 2022 Eurovision final"
 output:
   distill::distill_article:
     self_contained: false
@@ -11,7 +11,9 @@ output:
 
 ## Introduction
 
+The glitz, the glamor, the inexplicable banana-eating wolves - the Eurovision Song Contest is nothing if not a spectacle, and one I eagerly anticipate each year. The rules have always been, to say the least, a little fuzzy (who let Australia compete, anyway?), but one in particular strikes me as contrary to Eurovision's already debatable commitment to merit-based adjudication: France, Germany, Italy, Spain, and the United Kingdom - the so-called "Big Five" - automatically qualify for the finals, regardless of the quality of their performances. This guaranteed spot offers a leg up over other countries, which must survive earlier rounds of the competition to earn their place in the final, but a question remains: do the Big Five countries ultimately score better than their competitors?
 
+In this project, I will test my hypothesis that Big Five countries do indeed out-score their competitors. I suspect that, since they compete in every final, Big Five countries will feel empowered to pour more resources into their respective contestants, and may have cultivated more audience loyalty over the years, compared to other countries which qualify on a more infrequent basis. A statistically significant, positive coefficient in my regression output would confirm my hypothesis. However, if my analysis reveals that there is no significant relationship between Big Five status and total score, or that such a relationship exists, but is negative (meaning Big Five countries score lower than their competitors), I will reject this hypothesis.
 
 ## Data
 
