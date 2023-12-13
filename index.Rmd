@@ -15,10 +15,6 @@ output:
 
 ## Data
 
-
-
-## Results
-
 ```{r setup}
 library(tidyverse)
 library(ggplot2)
@@ -40,7 +36,25 @@ euro <- euro |>
   )
 ```
 
-```{r initial visualization}
+```{r dependent var visualization}
+top_scores <- euro |>
+  group_by(Contestant, big_five) |>
+  summarize(
+    score = mean(Total.score, na.rm = TRUE)
+  )
+
+ggplot(top_scores, mapping = aes(x = score, y = fct_reorder(Contestant, score))) +
+  geom_col() +
+  labs(
+    title = "Distribution of 2022 Eurovision Final Scores",
+    x = "Total Score",
+    y = "Contestant"
+  )
+```
+
+## Results
+
+```{r barplot visualization}
 # creating a barplot visualization
 
 euro_bar <- euro |>
