@@ -37,6 +37,8 @@ euro <- euro |>
 ```
 
 ```{r dependent var visualization}
+# creating a visualization for the dependent variable (total score)
+
 top_scores <- euro |>
   group_by(Contestant, big_five) |>
   summarize(
