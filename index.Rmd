@@ -16,9 +16,9 @@ In this project, I will test my hypothesis that Big Five countries do indeed out
 
 ## Data
 
-The data used in this project was compiled by user ODI6S on Kaggle, and can be found at https://www.kaggle.com/datasets/diamondsnake/eurovision-song-contest-data/data. My primary dataset, here titled euro, consists of the point tallies (broken up into jury and televote scores) for all 25 countries that competed in the 2022 Eurovision Song Contest final. The study is cross-sectional, since it was compiled at one point in time, after the contest results were broadcast, and therefore does not capture any change over time. Additionally, the data collected is purely observational: my explanatory variable was not randomly assigned as part of a controlled manipulation of the contest. Since the causal assumptions have not been satisfied, my analysis will only apply to correlational relationships. Each row represents a single competing country.
+The data used in this project was compiled by user ODI6S on Kaggle, and can be found at https://www.kaggle.com/datasets/diamondsnake/eurovision-song-contest-data/data. My primary dataset, here titled "euro," consists of the point tallies (broken up into jury and televote scores) for all 25 countries that competed in the 2022 Eurovision Song Contest final. The study is cross-sectional, since it was compiled at one point in time, after the contest results were broadcast, and therefore does not capture any change over time. Additionally, the data collected is purely observational: my explanatory variable was not randomly assigned as part of a controlled manipulation of the contest. Since the causal assumptions have not been satisfied, my analysis will only apply to correlational relationships. Each row represents a single competing country.
 
-Big Five status - which is to say, whether a country pre-qualified for the final round of competition - is the explanatory variable of interest here, and is coded as either "Big Five," for France, Germany, Italy, Spain, and the UK, or "Not Big Five," for all others. In order to incorporate other potential confounding variables in my regression analysis, I also incorporated another dataset from the same source, here titled song, which includes other observational data from the 2022 contest, such as the gender of the performers and the language in which they sang. I will use each country's total score, the sum of their jury and televote points, as my response variable - below, I have produced a visualization of the distribution of this variable.
+Big Five status - which is to say, whether a country pre-qualified for the final round of competition - is the explanatory variable of interest here, and is coded as either "Big Five," for France, Germany, Italy, Spain, and the UK, or "Not Big Five," for all others. In order to incorporate other potential confounding variables in my regression analysis, I also incorporated another dataset from the same source, here titled "song," which includes other observational data from the 2022 contest, such as the gender of the performers and the language in which they sang. I will use each country's total score, the sum of their jury and televote points, as my response variable - below, I have produced a visualization of the distribution of this variable.
 
 ```{r setup}
 library(tidyverse)
@@ -61,6 +61,8 @@ ggplot(top_scores, mapping = aes(x = score, y = fct_reorder(Contestant, score)))
 
 ## Results
 
+The following plot represents the average scores of the Big Five and non-Big Five groups in the 2022 final.
+
 ```{r barplot visualization}
 # creating a barplot visualization
 
@@ -81,6 +83,10 @@ euro_bar <- euro |>
 euro_bar
 ```
 
+In this particular year, Big Five countries outperformed their competitors, receiving an average score of 243.2 to their competitors' 171.2. What remains to be seen, however, is whether this result is statistically significant.
+
+The following regression models will attempt to shed some light on this question.
+
 ```{r single linear regression}
 # creating a linear regression for the main variable
 
@@ -99,6 +105,10 @@ modelsummary(list(Regression = fit1),
              coef_map = var_labels,
              gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
+
+This single regression confirms that not being in the Big Five was associated with a 72-point decrease in average total scores in 2022 (see the coefficient of "Not Big Five" in the above table). Yet the p-value of this coefficient is approximately 0.393. Since 0.393 is substantially greater than 0.05, we must accept the null hypothesis of no effect at a test level of $\alpha = 0.05$. In other words, this result is actually statistically indistinguishable from 0, and could very likely have resulted from random chance. Even if this regression had produced a significant result, it should not be interpreted causally, since Big Five status is not randomly assigned.
+
+I will next produce a multiple regression model in order to assess the potential influence of confounders on this relationship.
 
 ```{r joining a dataset}
 # loading a new dataset
@@ -146,5 +156,10 @@ modelsummary(list(Regression = fit2),
              gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
+This multiple regression indicates that not being in the Big Five is associated with a 141.31-point decrease in average total scores, where several other variables, including the gender of the performers, the number of back-up dancers and singers, and whether they sang non-English lyrics, are held fixed (see the coefficient of "Not Big Five" in the above table). The p-value for this coefficient - 0.136 - is less than the p-value from the previous, single regression, but it is still greater than 0.05, and therefore insignificant at a test level of $\alpha = 0.05$. The coefficients of the confounding variables are similarly insignificant. Even if this regression had produced a significant result, it should not be interpreted causally, since Big Five status is not randomly assigned.
 
 ## Conclusion
+
+Based on the 2022 Eurovision final, there does not appear to be a statistically significant scoring advantage to being a Big Five member. Although my regressions produced a negative coefficient of "Not Big Five," confirming that Big Five countries outscored their competitors in 2022, these coefficients had high p-values, and so these results are not meaningfully different from 0, as they could very well have resulted from chance variation. In the absence of more compelling evidence, I therefore reject my initial hypothesis and accept the null hypothesis of no effect.
+
+It should be noted that these conclusions are predicated entirely on one contest's results. Additional analysis of the performance of Big Five and non-Big Five countries over time could help clarify the full extent of this relationship. After all, it is also possible that I have committed a Type II error, and the relationship I hypothesized does exist, but is not perceivable at this level of analysis. Despite my incorporation of several potential confounders in the multiple regression, there are other factors at play which are not reflected in the dataset: for instance, current events may color voters' attitudes towards various countries - the war in Ukraine (a non-Big Five country) is one example, and could conceivably have contributed to that country's victory. Another avenue to extend this project would be to consider the differential impact of Big Five status on jury and televoting scores.
